@@ -1,0 +1,80 @@
+<div class="booking-container">
+  <h2>BOOK YOUR APPOINTMENT</h2>
+
+  <!-- Success Message -->
+  <div *ngIf="showMessage" class="alert alert-success">
+    <strong>Success!</strong> {{ successMessage }}
+  </div>
+
+  <!-- Booking Form -->
+  <form (ngSubmit)="submitForm()" #bookingForm="ngForm">
+    <div class="form-group">
+      <label for="name">Name:</label>
+      <input type="text" id="name" [(ngModel)]="name" name="name" required #nameField="ngModel" />
+      <div *ngIf="nameField.invalid && nameField.touched" class="error-message">
+        Name is required.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="phone">Phone:</label>
+      <input type="text" id="phone" [(ngModel)]="phone" name="phone" required #phoneField="ngModel" />
+      <div *ngIf="phoneField.invalid && phoneField.touched" class="error-message">
+        Phone is required.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="doctor">Doctor:</label>
+      <select id="doctor" [(ngModel)]="doctor" name="doctor" required #doctorField="ngModel">
+        <option *ngFor="let doctor of doctors" [value]="doctor">{{ doctor }}</option>
+      </select>
+      <div *ngIf="doctorField.invalid && doctorField.touched" class="error-message">
+        Please select a doctor.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="date">Date:</label>
+      <input type="date" id="date" [(ngModel)]="date" name="date" required #dateField="ngModel" />
+      <div *ngIf="dateField.invalid && dateField.touched" class="error-message">
+        Date is required.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="period">Select Time Period:</label>
+      <select id="period" [(ngModel)]="selectedPeriod" name="period" (change)="selectSlot(selectedPeriod, '')" required #periodField="ngModel">
+        <option value="">Select</option>
+        <option value="Morning">Morning</option>
+        <option value="Evening">Evening</option>
+      </select>
+      <div *ngIf="periodField.invalid && periodField.touched" class="error-message">
+        Please select a time period.
+      </div>
+    </div>
+
+    <div class="time-slot-container">
+      <div *ngIf="selectedPeriod" class="time-slot-grid">
+        <div *ngFor="let slot of timeSlots[selectedPeriod]" class="time-slot">
+          <button 
+            type="button"
+            [ngClass]="{
+              'booked': isBooked(slot),
+              'selected': selectedSlot === slot && !isBooked(slot),
+              'available': !isBooked(slot) && selectedSlot !== slot
+            }"
+            (click)="selectSlot(selectedPeriod, slot)"
+            [disabled]="isBooked(slot)">
+            {{ slot }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" [disabled]="!bookingForm.form.valid || !selectedSlot" class="submit-btn">Submit</button>
+      <button type="button" (click)="clearForm()" class="cancel-btn">Cancel</button>
+    </div>
+  </form>
+</div>

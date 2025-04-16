@@ -1,0 +1,157 @@
+.booking-container {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 30px;
+  border: 2px solid #ddd;
+  border-radius: 12px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+h2 {
+  text-align: center;
+  font-size: 26px;
+  margin-bottom: 30px;
+  color: #2c3e50;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+input, select {
+  padding: 10px 12px;
+  font-size: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input:focus, select:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.error-message {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+  font-style: italic;
+}
+
+.time-slot-container {
+  margin-top: 20px;
+}
+
+.time-slot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+}
+
+.time-slot button {
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s ease, box-shadow 0.2s;
+  border: 1px solid transparent;
+  width: 100%;
+}
+
+.time-slot button.available {
+  background-color: #e6f9f7;
+  color: #00796b;
+  border: 1px solid #00796b;
+}
+
+.time-slot button.available:hover {
+  background-color: #b2f0ea;
+  transform: scale(1.02);
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+.time-slot button.selected {
+  background-color: #28a745 !important;
+  color: white;
+  border: none;
+}
+
+.time-slot button.booked {
+  background-color: #dc3545;
+  color: white;
+  cursor: not-allowed;
+}
+
+.time-slot button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+button[type="submit"], button[type="button"] {
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 6px;
+  font-weight: bold;
+  border: none;
+  width: 100%;
+  transition: background-color 0.3s ease, transform 0.2s;
+}
+
+button[type="submit"] {
+  background-color: #007bff;
+  color: white;
+}
+
+button[type="submit"]:hover {
+  background-color: #0056b3;
+  transform: scale(1.03);
+}
+
+button[type="button"] {
+  background-color: #f0ad4e;
+  color: white;
+}
+
+button[type="button"]:hover {
+  background-color: #ec971f;
+  transform: scale(1.03);
+}
+
+.alert-success {
+  color: #4CAF50;
+  background-color: #dff0d8;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+.error-message {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+  font-style: italic;
+}
