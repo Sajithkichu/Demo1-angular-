@@ -33,6 +33,9 @@
       <div *ngIf="nameField.invalid && nameField.touched" class="error-message">
         {{ nameError || 'Name is required.' }}
       </div>
+      <div *ngIf="nameError && !nameField.invalid" class="error-message">
+        {{ nameError }}
+      </div>
     </div>
 
     <!-- Phone Field -->
@@ -44,13 +47,16 @@
         [(ngModel)]="phone" 
         name="phone" 
         required 
-        #phoneField="ngModel" 
         maxlength="10" 
         pattern="^[0-9]{10}$"
+        #phoneField="ngModel" 
         class="form-control"
       />
       <div *ngIf="phoneField.invalid && phoneField.touched" class="error-message">
         {{ phoneError || 'Enter a valid 10-digit phone number.' }}
+      </div>
+      <div *ngIf="phoneError && !phoneField.invalid" class="error-message">
+        {{ phoneError }}
       </div>
     </div>
 

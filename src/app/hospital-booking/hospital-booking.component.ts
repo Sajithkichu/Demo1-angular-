@@ -110,24 +110,28 @@ export class HospitalBookingComponent implements OnInit {
   validateForm(): boolean {
     let isValid = true;
 
+    // Name validation
     if (!this.name) {
       this.nameError = 'Name is required.';
       isValid = false;
+    } else if (this.isUserAlreadyBooked(this.name, this.phone)) {
+      this.nameError = 'This name is already used for a booking.';
+      isValid = false;
     }
 
+    // Phone validation
     if (!this.phone) {
       this.phoneError = 'Phone number is required.';
       isValid = false;
     } else if (!/^[0-9]{10}$/.test(this.phone)) {
       this.phoneError = 'Phone must be a 10-digit number.';
       isValid = false;
-    }
-
-    if (this.isUserAlreadyBooked(this.name, this.phone)) {
-      this.generalErrorMessage = 'A booking already exists for this user.';
+    } else if (this.isUserAlreadyBooked(this.name, this.phone)) {
+      this.phoneError = 'This phone number is already associated with a booking.';
       isValid = false;
     }
 
+    // Doctor validation
     if (!this.doctor) {
       this.doctorError = 'Please select a doctor.';
       isValid = false;
@@ -137,10 +141,12 @@ export class HospitalBookingComponent implements OnInit {
       this.doctorUnavailableMessage = 'Sorry! The doctor is not available at the selected time. Please choose another slot.';
     }
 
+    // Date validation
     if (!this.date) {
       isValid = false;
     }
 
+    // Slot validation
     if (!this.selectedSlot) {
       this.slotError = 'Please select a slot.';
       isValid = false;
