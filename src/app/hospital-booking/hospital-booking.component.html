@@ -6,75 +6,143 @@
     <strong>Success!</strong> {{ successMessage }}
   </div>
 
+  <!-- General Error Message -->
+  <div *ngIf="generalErrorMessage" class="alert alert-danger">
+    <strong>Error:</strong> {{ generalErrorMessage }}
+  </div>
+
+  <!-- Doctor Unavailable Message -->
+  <div *ngIf="doctor && date && selectedPeriod && !isDoctorAvailable(doctor, date, selectedPeriod)" class="alert alert-danger">
+    <strong>Sorry!</strong> The doctor is not available at the selected time. Please choose another slot.
+  </div>
+
   <!-- Booking Form -->
   <form (ngSubmit)="submitForm()" #bookingForm="ngForm">
+    <!-- Name Field -->
     <div class="form-group">
       <label for="name">Name:</label>
-      <input type="text" id="name" [(ngModel)]="name" name="name" required #nameField="ngModel" />
+      <input 
+        type="text" 
+        id="name" 
+        [(ngModel)]="name" 
+        name="name" 
+        required 
+        #nameField="ngModel" 
+        class="form-control"
+      />
       <div *ngIf="nameField.invalid && nameField.touched" class="error-message">
-        Name is required.
+        {{ nameError || 'Name is required.' }}
       </div>
     </div>
 
+    <!-- Phone Field -->
     <div class="form-group">
       <label for="phone">Phone:</label>
-      <input type="text" id="phone" [(ngModel)]="phone" name="phone" required #phoneField="ngModel" />
+      <input 
+        type="text" 
+        id="phone" 
+        [(ngModel)]="phone" 
+        name="phone" 
+        required 
+        #phoneField="ngModel" 
+        maxlength="10" 
+        pattern="^[0-9]{10}$"
+        class="form-control"
+      />
       <div *ngIf="phoneField.invalid && phoneField.touched" class="error-message">
-        Phone is required.
+        {{ phoneError || 'Enter a valid 10-digit phone number.' }}
       </div>
     </div>
 
+    <!-- Doctor Field -->
     <div class="form-group">
       <label for="doctor">Doctor:</label>
-      <select id="doctor" [(ngModel)]="doctor" name="doctor" required #doctorField="ngModel">
-        <option *ngFor="let doctor of doctors" [value]="doctor">{{ doctor }}</option>
+      <select 
+        id="doctor" 
+        [(ngModel)]="doctor" 
+        name="doctor" 
+        required 
+        #doctorField="ngModel"
+        class="form-control"
+      >
+        <option value="">Select</option>
+        <option *ngFor="let doc of doctors" [value]="doc">{{ doc }}</option>
       </select>
       <div *ngIf="doctorField.invalid && doctorField.touched" class="error-message">
-        Please select a doctor.
+        {{ doctorError || 'Doctor is required.' }}
       </div>
     </div>
 
+    <!-- Date Field -->
     <div class="form-group">
       <label for="date">Date:</label>
-      <input type="date" id="date" [(ngModel)]="date" name="date" required #dateField="ngModel" />
-      <div *ngIf="dateField.invalid && dateField.touched" class="error-message">
-        Date is required.
-      </div>
+      <input 
+        type="date" 
+        id="date" 
+        [(ngModel)]="date" 
+        name="date" 
+        required 
+        #dateField="ngModel"
+        class="form-control"
+      />
     </div>
 
+    <!-- Time Period Field -->
     <div class="form-group">
       <label for="period">Select Time Period:</label>
-      <select id="period" [(ngModel)]="selectedPeriod" name="period" (change)="selectSlot(selectedPeriod, '')" required #periodField="ngModel">
+      <select 
+        id="period" 
+        [(ngModel)]="selectedPeriod" 
+        name="period" 
+        (change)="selectSlot(selectedPeriod, '', '')" 
+        required 
+        #periodField="ngModel"
+        class="form-control"
+      >
         <option value="">Select</option>
         <option value="Morning">Morning</option>
         <option value="Evening">Evening</option>
       </select>
-      <div *ngIf="periodField.invalid && periodField.touched" class="error-message">
-        Please select a time period.
-      </div>
     </div>
 
-    <div class="time-slot-container">
-      <div *ngIf="selectedPeriod" class="time-slot-grid">
-        <div *ngFor="let slot of timeSlots[selectedPeriod]" class="time-slot">
+    <!-- Time Slot Selection -->
+    <div class="time-slot-container" *ngIf="selectedPeriod">
+      <div class="time-slot-grid">
+        <div 
+          *ngFor="let slot of timeSlots[selectedPeriod]; let i = index" 
+          class="time-slot">
           <button 
             type="button"
             [ngClass]="{
-              'booked': isBooked(slot),
-              'selected': selectedSlot === slot && !isBooked(slot),
-              'available': !isBooked(slot) && selectedSlot !== slot
+              'booked': isSlotBooked(doctor, date, selectedPeriod, 'seat-' + i),
+              'selected': selectedSlot === 'seat-' + i && !isSlotBooked(doctor, date, selectedPeriod, 'seat-' + i),
+              'available': !isSlotBooked(doctor, date, selectedPeriod, 'seat-' + i)
             }"
-            (click)="selectSlot(selectedPeriod, slot)"
-            [disabled]="isBooked(slot)">
+            (click)="selectSlot(selectedPeriod, slot, 'seat-' + i)"
+            [disabled]="isSlotBooked(doctor, date, selectedPeriod, 'seat-' + i)"
+            class="btn btn-primary"
+          >
             {{ slot }}
           </button>
         </div>
       </div>
+      <div *ngIf="slotError" class="error-message">{{ slotError }}</div>
     </div>
 
+    <!-- Submit and Cancel Buttons -->
     <div class="form-actions">
-      <button type="submit" [disabled]="!bookingForm.form.valid || !selectedSlot" class="submit-btn">Submit</button>
-      <button type="button" (click)="clearForm()" class="cancel-btn">Cancel</button>
+      <button 
+        type="submit" 
+        [disabled]="!bookingForm.form.valid || !selectedSlot" 
+        class="submit-btn btn btn-success">
+        Submit
+      </button>
+      <button 
+        type="button" 
+        (click)="clearForm()" 
+        class="cancel-btn btn btn-danger">
+        Cancel
+      </button>
     </div>
   </form>
 </div>
