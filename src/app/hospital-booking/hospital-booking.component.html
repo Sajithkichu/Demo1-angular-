@@ -135,7 +135,7 @@
       <div *ngIf="slotError" class="error-message">{{ slotError }}</div>
     </div>
 
-    <!-- Submit and Cancel Buttons -->
+    <!-- Submit, Cancel, and View All Bookings Buttons -->
     <div class="form-actions">
       <button 
         type="submit" 
@@ -148,6 +148,16 @@
         (click)="clearForm()" 
         class="cancel-btn btn btn-danger">
         Cancel
+      </button>
+    </div>
+    
+    <!-- View All Bookings Button -->
+    <div class="text-center mt-3">
+      <button 
+        type="button" 
+        (click)="viewAllBookings()" 
+        class="view-all-btn btn btn-info">
+        View All Bookings
       </button>
     </div>
   </form>

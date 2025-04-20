@@ -9,6 +9,9 @@
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
   font-family: 'Segoe UI', sans-serif;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centering the form */
 }
 
 /* Heading Style */
@@ -18,6 +21,7 @@ h2 {
   margin-bottom: 30px;
   color: #1a1a1a;
   font-weight: bold;
+  word-wrap: break-word; /* Helps with long words breaking into the next line */
 }
 
 /* Form Styling */
@@ -25,12 +29,15 @@ form {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  width: 100%;
+  max-width: 600px; /* Ensures the form does not stretch too wide */
 }
 
 /* Form Group Style */
 .form-group {
   display: flex;
   flex-direction: column;
+  width: 100%; /* Ensure the form groups span the full width */
 }
 
 /* Label Styling */
@@ -39,6 +46,7 @@ label {
   margin-bottom: 6px;
   color: #333333;
   font-size: 14px;
+  line-height: 1.4;
 }
 
 /* Input and Select Styling */
@@ -49,7 +57,8 @@ input, select {
   border-radius: 8px;
   transition: border-color 0.3s, box-shadow 0.3s;
   background-color: #f9f9f9;
-  width: 100%;
+  width: 100%; /* Ensure all fields take up the full width */
+  box-sizing: border-box; /* Ensure padding doesn't affect width */
 }
 
 /* Input and Select Focus Styling */
@@ -155,6 +164,9 @@ input:focus, select:focus {
   gap: 20px;
   margin-top: 30px;
   flex-wrap: wrap;
+  width: 100%;
+  align-items: center;
+  justify-content: center; /* Center buttons */
 }
 
 /* Submit and Cancel Button Styles */
@@ -163,7 +175,7 @@ button[type="submit"], button[type="button"] {
   font-size: 16px;
   border-radius: 8px;
   font-weight: bold;
-  width: 48%;
+  width: 48%; /* Ensures buttons are consistently aligned */
   border: none;
   transition: background-color 0.3s, transform 0.2s;
 }
@@ -190,13 +202,37 @@ button[type="button"]:hover {
   transform: scale(1.03);
 }
 
+/* View All Booking Button */
+.view-all-booking {
+  padding: 14px;
+  font-size: 16px;
+  border-radius: 8px;
+  font-weight: bold;
+  width: 48%; /* Same width as Submit/Cancel buttons */
+  background-color: #c2ade6; /* Light blue color */
+  color: rgb(255, 255, 255);
+  border: none;
+  transition: background-color 0.3s, transform 0.2s;
+  margin-top: 20px;
+  text-align: center; /* Center the text inside the button */
+  display: block; /* Ensure the button is a block element */
+  margin-left: auto; /* Align left */
+  margin-right: auto; /* Align right */
+}
+
+/* Hover Effect for View All Booking Button */
+.view-all-booking:hover {
+  background-color: #87cefa; /* Lighter blue on hover */
+  transform: scale(1.03);
+}
+
 /* Mobile and Tablet Adjustments */
 @media (max-width: 768px) {
   .form-actions {
     flex-direction: column;
     align-items: center;
   }
-  button[type="submit"], button[type="button"] {
+  button[type="submit"], button[type="button"], .view-all-booking {
     width: 100%;
     margin-bottom: 10px;
   }

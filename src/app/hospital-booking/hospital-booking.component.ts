@@ -17,7 +17,7 @@ export class HospitalBookingComponent implements OnInit {
   selectedSlot = '';
   selectedPeriod = '';
   doctorUnavailableMessage = '';
-
+  
   nameError = '';
   phoneError = '';
   doctorError = '';
@@ -45,8 +45,9 @@ export class HospitalBookingComponent implements OnInit {
     return this.bookedSlots.filter(s => s.doctor === doctor && s.date === date && s.period === period).length < this.timeSlots[period].length;
   }
 
-  isUserAlreadyBooked(name: string, phone: string): boolean {
-    return this.bookings.some(b => b.name === name && b.phone === phone);
+  // Check if the phone number is already associated with a booking
+  isPhoneAlreadyBooked(phone: string): boolean {
+    return this.bookings.some(b => b.phone === phone);
   }
 
   isSlotBooked(doctor: string, date: string, period: string, seatId: string): boolean {
@@ -101,10 +102,16 @@ export class HospitalBookingComponent implements OnInit {
     setTimeout(() => this.showMessage = false, 5000);
   }
 
+  // Check if all slots are booked for a given doctor, date, and period
   isAllSlotsBooked(doctor: string, date: string, period: string): boolean {
     const totalSlots = this.timeSlots[period] || [];
     const booked = this.bookedSlots.filter(s => s.doctor === doctor && s.date === date && s.period === period);
     return booked.length >= totalSlots.length;
+  }
+
+  isDateFullyBooked(date: string): boolean {
+    const bookedDates = this.bookedSlots.filter(b => b.date === date);
+    return bookedDates.length === this.doctors.length * this.timeSlots['Morning'].length + this.doctors.length * this.timeSlots['Evening'].length;
   }
 
   validateForm(): boolean {
@@ -113,9 +120,6 @@ export class HospitalBookingComponent implements OnInit {
     // Name validation
     if (!this.name) {
       this.nameError = 'Name is required.';
-      isValid = false;
-    } else if (this.isUserAlreadyBooked(this.name, this.phone)) {
-      this.nameError = 'This name is already used for a booking.';
       isValid = false;
     }
 
@@ -126,7 +130,7 @@ export class HospitalBookingComponent implements OnInit {
     } else if (!/^[0-9]{10}$/.test(this.phone)) {
       this.phoneError = 'Phone must be a 10-digit number.';
       isValid = false;
-    } else if (this.isUserAlreadyBooked(this.name, this.phone)) {
+    } else if (this.isPhoneAlreadyBooked(this.phone)) {
       this.phoneError = 'This phone number is already associated with a booking.';
       isValid = false;
     }
@@ -143,6 +147,9 @@ export class HospitalBookingComponent implements OnInit {
 
     // Date validation
     if (!this.date) {
+      isValid = false;
+    } else if (this.isDateFullyBooked(this.date)) {
+      this.generalErrorMessage = 'Sorry! The selected date is fully booked.';
       isValid = false;
     }
 
@@ -176,5 +183,12 @@ export class HospitalBookingComponent implements OnInit {
 
   isDoctorDateBooked(doctor: string, date: string, period: string): boolean {
     return this.bookedSlots.some(s => s.doctor === doctor && s.date === date && s.period === period);
+  }
+
+  // View All Bookings
+  viewAllBookings() {
+    // You can navigate to a new route or display the bookings in a modal or new page
+    console.log('All bookings:', this.bookings);
+    alert('All bookings are logged in the console!');
   }
 }
